@@ -1,77 +1,119 @@
 package temperature;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Station {
-	private int sid;
-	private int year;
-	private double[] coord; // long = 0 ; lat = 1
-	private double[] temp;
-	private double[] prec;
-	private Station nextSt = null;
-	private Station prevSt = null;
+	private double longitude;
+	private double latitude;
+	private ArrayList<Data> dataAL;
 	
-	public Station(){
-		this.sid = sid;
-		year = 0;
-		coord = new double[2];
-		initCoord();
-		temp = new double[12];
-		prec = new double[12];
-		initData();
-		boolean valid = true;
+	public Station(double lgt, double lat){
+		setCoord(lgt, lat);
+		dataAL = new ArrayList<Data>();
 	}
 	
-	public void initCoord(){
-		coord[0] = 1000;
-		coord[1] = 100;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Station other = (Station) obj;
+		if (Double.doubleToLongBits(latitude) != Double
+				.doubleToLongBits(other.latitude))
+			return false;
+		if (Double.doubleToLongBits(longitude) != Double
+				.doubleToLongBits(other.longitude))
+			return false;
+		return true;
 	}
 	
-	public void initData(){
-		for(int i=0;i<temp.length;i++){
-			temp[i] = -999;
-			prec[i] = -999;
+	public void setTemp (int year, double[] t){
+		double[] p = null;
+		Data d = new Data(year, t, p);
+		if(dataAL.contains(d)){
+			Iterator<Data> it = dataAL.iterator();
+			while(it.hasNext())
+			{
+			    Data elem = it.next();
+			    if (elem.equals(d)){
+			    	elem.setTemp(t);
+			    }
+			}
+		}else{
+			dataAL.add(d);
 		}
 	}
 	
-	public void setYear(int y){
-		year = y;
-	}
-	
-	public void setTemp (int idx, double t){
-		if (idx<12){
-			temp[idx] = t;
-		}
-	}
-	
-	public void setPrec(int idx, double p){
-		if (idx<12){
-			prec[idx] = p;
+	public void setPrec(int year, double[] p){
+		double[] t = null;
+		Data d = new Data(year, t, p);
+		if(dataAL.contains(d)){
+			Iterator<Data> it = dataAL.iterator();
+			while(it.hasNext())
+			{
+			    Data elem = it.next();
+			    if (elem.equals(d)){
+			    	elem.setPrec(t);
+			    }
+			}
+		}else{
+			dataAL.add(d);
 		}
 	}
 	
 	public void setCoord (double lg, double lat){
-		coord[0] = lg;
-		coord[1] = lat;
+		longitude = lg;
+		latitude = lat;
 	}
 	
-	public int getSid(){
-		return sid;
-	}
-	public int getYear (){
-		return year;
-	}
 	public double[] getCoord(){
+		double[] coord = new double[2];
+		coord[0] = longitude;
+		coord[1] = latitude;
 		return coord;
 	}
-	public double[] getTemp(){
-		return temp;
+	
+	public double[] getTemp(int year){
+		double[] donnee = new double[12];
+		Data d = new Data(year);
+		Iterator<Data> it = dataAL.iterator();
+		while(it.hasNext())
+		{
+		    Data elem = it.next();
+		    if (elem.equals(d)){
+		    	donnee = elem.getTemp();
+		    }
+		}
+		return donnee;
 	}
-	public double[] getPrec(){
-		return prec;
-	}
-	public double getTemp(int idx){
-		return temp[idx];
-	}
-	public double getPrec(int idx){
-		return prec[idx];
+	
+	public double[] getPrec(int year){
+		double[] donnee = new double[12];
+		Data d = new Data(year);
+		Iterator<Data> it = dataAL.iterator();
+		while(it.hasNext())
+		{
+		    Data elem = it.next();
+		    if (elem.equals(d)){
+		    	donnee = elem.getPrec();
+		    }
+		}
+		return donnee;
 	}
 }
