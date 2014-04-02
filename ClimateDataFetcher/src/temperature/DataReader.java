@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DataReader {
@@ -18,36 +19,43 @@ public class DataReader {
 		for(int i = 0 ; i<file.length;i++){
 			int idx = file[i].indexOf(".");
 			String type = file[i].substring(0, idx);
-			System.out.println(type);
 			int year = Integer.parseInt(file[i].substring(idx+1));
 			String filepath = folder + "/"+ file[i];
-			readFile(filepath, year, type);	
+			if (year>1984){
+				readFile(filepath, year, type);	
+				printData(year, type);
+			}
 		}
 	}
 
+	private void printData(int year, String type) {
+		Iterator<Station> it = listS.iterator();
+		System.out.println(year + type);
+		while(it.hasNext()){
+		    Station obj = it.next();
+		    String print = obj.toString(year, type);
+		    /*create new file here*/
+		    System.out.println(print);
+		}
+		
+	}
+
 	private void readFile(String file, int year, String type) throws FileNotFoundException, IOException {
-		int i = 0;
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		try{
 			String line;
 			while ((line = br.readLine()) != null) {
-				if(i==1){						//TODO Condition i==1 to be deleted
-					System.out.println(line);	
-					//TODO change create station to a simple create station then update station with rest of line
-					//TODO if station exist (to be tested -> write the eqauls.object in Station) then update
-					createStation(line+" ", year, type);
-				}								//TODO Condition i==1 to be deleted here too
-				i++;
+				deCryptString(line+" ", year, type);
+
 			}
 			br.close();
 		}
 		finally{
 			br.close();
 		}
-		System.out.println("final " +i); //TODO to be deleted
 	}
 
-	private void createStation(String s, int year, String type) {
+	private void deCryptString(String s, int year, String type) {
 		double[] data = new double[12];
 		double[] coord = new double[2];
 		int i = 0;
@@ -68,27 +76,39 @@ public class DataReader {
 				}
 			}
 		}
-		Station st = new Station(coord[0], coord[1]);
 		
-		if (type == "air_temp"){
-			
-		}
-		//Check from here
-		for (int k=0; k<data.length;k++){
-			switch (k){
-			case 0:
-				st.setCoord(data[0], data[1]);
-				break;
-			case 1:
-			default:
-				st.setTemp(k, data[k]);
+		if (coord[0]>-20 && coord[0]<52){
+			if (coord[1]>-35 && coord[1]<25){
+				CreateStation(coord, data, year, type);
 			}
 		}
-		listS.add(st);	
+		
 	}
 	
-	private void updateStation(String line, int year) {
-		// TODO Auto-generated method stub
+	private void CreateStation(double[] coord, double[] data, int year, String type){
+		Station st = new Station(coord[0], coord[1]);
+		boolean check = false;
+		Iterator<Station> it = listS.iterator();
+		while(it.hasNext()){
+		    Station obj = it.next();
+		    if (obj.equals(st)){
+		    	if (type.equalsIgnoreCase("air_temp")){
+					obj.setTemp(year, data);
+				}else{
+					obj.setPrec(year, data);
+				}
+		    	check = true;
+		    }
+		}
 		
+		if (!check){
+			if (type.equalsIgnoreCase("air_temp")){
+				st.setTemp(year, data);
+			}else{
+				st.setPrec(year, data);
+			}
+	    	listS.add(st);
+
+		}
 	}
 }

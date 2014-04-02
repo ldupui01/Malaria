@@ -15,6 +15,7 @@ public class Data {
 		setYear(y);
 		setTemp(t);
 		setPrec(p);
+		hashCode();
 	}
 
 	@Override

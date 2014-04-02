@@ -11,6 +11,7 @@ public class Station {
 	public Station(double lgt, double lat){
 		setCoord(lgt, lat);
 		dataAL = new ArrayList<Data>();
+		hashCode();
 	}
 	
 	@Override
@@ -69,7 +70,7 @@ public class Station {
 			{
 			    Data elem = it.next();
 			    if (elem.equals(d)){
-			    	elem.setPrec(t);
+			    	elem.setPrec(p);
 			    }
 			}
 		}else{
@@ -116,4 +117,25 @@ public class Station {
 		}
 		return donnee;
 	}
+	
+	//@Override
+	public String toString(int year, String type){
+	
+		String result = longitude +","+latitude+","+year;
+		
+		double[] data;
+		if(type.equalsIgnoreCase("air_temp")){
+			data = getTemp(year);
+			for(int i = 0;i<data.length;i++){
+				result += "," + data[i];
+			}
+		}else{
+			data = getPrec(year);
+			for(int i = 0;i<data.length;i++){
+				result += "," + data[i];
+			}
+		}
+		return result;
+	}
+	
 }
