@@ -118,21 +118,22 @@ public class Station {
 		return donnee;
 	}
 	
-	//@Override
 	public String toString(int year, String type){
 	
-		String result = longitude +","+latitude+","+year;
+		String result = longitude +","+latitude+","+year; // "\t" to insert a tab
 		
 		double[] data;
 		if(type.equalsIgnoreCase("air_temp")){
+			result +=",T";
 			data = getTemp(year);
 			for(int i = 0;i<data.length;i++){
-				result += "," + data[i];
+				result += "," + data[i]; // "\t" to insert a tab
 			}
 		}else{
+			result +=",P";
 			data = getPrec(year);
 			for(int i = 0;i<data.length;i++){
-				result += "," + data[i];
+				result += "," + data[i]; // "\t" to insert a tab
 			}
 		}
 		return result;

@@ -1,10 +1,13 @@
 package temperature;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,21 +26,44 @@ public class DataReader {
 			String filepath = folder + "/"+ file[i];
 			if (year>1984){
 				readFile(filepath, year, type);	
-				printData(year, type);
 			}
 		}
+		printData();
 	}
 
-	private void printData(int year, String type) {
-		Iterator<Station> it = listS.iterator();
-		System.out.println(year + type);
-		while(it.hasNext()){
-		    Station obj = it.next();
-		    String print = obj.toString(year, type);
-		    /*create new file here*/
-		    System.out.println(print);
-		}
-		
+	private void printData() {
+		 try{
+		    Writer output = null;
+		    File logFile = new File("results_02042014.txt");
+		     
+		    output = new BufferedWriter(new FileWriter(logFile));
+
+			Iterator<Station> it = listS.iterator();
+			while(it.hasNext()){
+				Station obj = it.next();
+				String print = "";
+				for (int year = 1985; year<2011;year++){
+					for (int i = 0; i<2; i++){
+						switch (i){
+						case 0:
+							print = obj.toString(year, "air_temp");
+							break;
+						case 1:
+							print = obj.toString(year, "air_temp");
+							break;
+						}
+						//System.out.println(print + "\r");
+						output.write(print + "\r");
+					}
+				}
+			}
+			output.close();
+			System.out.println(logFile.getCanonicalPath());
+	        System.out.println("File has been written");
+	
+	    }catch(Exception e){
+	        System.out.println("Could not create file");
+	    }
 	}
 
 	private void readFile(String file, int year, String type) throws FileNotFoundException, IOException {
@@ -54,6 +80,8 @@ public class DataReader {
 			br.close();
 		}
 	}
+
+
 
 	private void deCryptString(String s, int year, String type) {
 		double[] data = new double[12];
