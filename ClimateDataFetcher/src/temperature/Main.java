@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException{
-		File folder = new File("D:/GIS/Malaria/Climate");	//D:\GIS\Malaria\Climate
-		
+		File folder = new File("/Users/ludovicdupuis/Documents/workspace_Java/Malaria/ClimateDataFetcher/src/essai");	//D:/GIS/Malaria/Climate
+		//   /Users/ludovicdupuis/Documents/workspace_Java/Malaria/ClimateDataFetcher/src/essai
 		int i = 0;
 		File[] listOfFiles = folder.listFiles();
 		int j = listOfFiles.length;
@@ -23,7 +23,24 @@ public class Main {
 			}
 		}
 
-		DataReader dr = new DataReader(folder, fileName);
+		//DataReader dr = new DataReader(folder, fileName);
+		
+		File folder2 = new File("/Users/ludovicdupuis/Documents/workspace_Java/Malaria/ClimateDataFetcher/src/data2");
+		i = 0;
+		File[] listOfFiles2 = folder2.listFiles();
+		j = listOfFiles2.length;
+			System.out.println("length: " + j);
+		
+		String[] fileName2 = new String[j];
+
+		for (File file : listOfFiles2) {
+			if (file.isFile()) {
+				fileName2[i] = file.getName();
+				System.out.println(file.getName());
+				i++;
+			}
+		}
+		DataReader2 dr2 = new DataReader2(folder2, fileName2, "Temp");
 
 	}
 }

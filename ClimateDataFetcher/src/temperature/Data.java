@@ -11,6 +11,14 @@ public class Data {
 		prec = new double[12];
 	}
 	
+	private void init(){
+		for(int i=0;i<temp.length;i++){
+			temp[i]=-9999;
+			prec[i]=-9999;
+		}
+	}
+	
+	
 	public Data(int y, double[] t, double[] p){
 		setYear(y);
 		setTemp(t);
