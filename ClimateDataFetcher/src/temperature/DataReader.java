@@ -49,7 +49,7 @@ public class DataReader {
 							print = obj.toString(year, "air_temp");
 							break;
 						case 1:
-							print = obj.toString(year, "air_temp");
+							print = obj.toString(year, "prec");
 							break;
 						}
 						//System.out.println(print + "\r");
