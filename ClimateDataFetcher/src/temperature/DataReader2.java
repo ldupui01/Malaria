@@ -23,23 +23,16 @@ public class DataReader2 {
 		listYear = new LinkedList<Integer>();
 		
 		for(int i = 0 ; i<file.length;i++){
-			//int idx = file[i].indexOf(".");
-			//String type = file[i].substring(0, idx);
-			//int year = Integer.parseInt(file[i].substring(idx+1));
-			String filepath = folder + "/"+ file[i];
-			//if (year>1984){
-				readFile(filepath, type); //, year, type);	
-				//listYear.add(year);
-			//}
+			String filepath = folder + "/"+ file[i];	
+			readFile(filepath, type); 
 		}
-		printData();
-		//System.out.println(listS.size());
+		printData(type);
 	}
 
-	private void printData() {
+	private void printData(String type) {
 		 try{
 		    Writer output = null;
-		    File logFile = new File("results_02042015.txt");
+		    File logFile = new File("results2_" + type + ".txt");
 		     
 		    output = new BufferedWriter(new FileWriter(logFile));
 
@@ -47,19 +40,17 @@ public class DataReader2 {
 			while(it.hasNext()){
 				Station obj = it.next();
 				String print = "";
-				for (Integer year : listYear){   //(int year = 1985; year<2011;year++){
-					for (int i = 0; i<2; i++){
-						switch (i){
-						case 0:
+				for (int year = 2005; year < 2014; year++){
+						switch (type){
+						case "air_temp":
 							print = obj.toString(year, "air_temp");
+							System.out.println(print);
 							break;
-						case 1:
+						case "prec":
 							print = obj.toString(year, "prec");
 							break;
 						}
-						//System.out.println(print + "\r");
 						output.write(print + "\r");
-					}
 				}
 			}
 			output.close();
@@ -67,7 +58,8 @@ public class DataReader2 {
 	        System.out.println("File has been written");
 	
 	    }catch(Exception e){
-	        System.out.println("Could not create file");
+	    	System.err.println("Caught IOException: " + e.getMessage());
+	    	System.out.println("Could not create file");
 	    }
 	}
 
@@ -81,9 +73,7 @@ public class DataReader2 {
 					System.out.println("found coordinate");
 					coordinates = decryptCoord(line);
 				}
-				//System.out.println(line.substring(0,1));
 				if(!line.substring(0,1).equalsIgnoreCase("#")){
-					//System.out.println(line);
 					deCryptString(line+" ", type, coordinates);
 				}
 			}
@@ -95,7 +85,6 @@ public class DataReader2 {
 	}
 
 	private double[] decryptCoord(String line) {
-		// TODO Auto-generated method stub
 		double[] coord = new double[2];
 		int i = 15;
 		int idx = 0;
@@ -104,26 +93,25 @@ public class DataReader2 {
 				if(j>i && line.substring(i+1, j).length()>1){
 					if (idx == 0){
 						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
-						System.out.println(line.substring(i, j-2));
+						//System.out.println(line.substring(i, j-2));
 						idx++;
 					}else if(idx == 1){
 						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
-						System.out.println(line.substring(i,j-2));
+						//System.out.println(line.substring(i,j-2));
 						idx++;
 					}
 					i = j;
 				}else{
 					i = j;
 				}
-			}}
-		
+			}
+		}
 		return coord;
 	}
 
 	private void deCryptString(String s, String type, double[] coord) {
-		//System.out.println(s.substring(0,14));
 		double[] data = new double[12];
-		int year = -999;
+		Integer year = -999;
 		int i = 0;
 		int idx = 0;
 		for(int j=0; j<s.length();j++){
@@ -131,12 +119,10 @@ public class DataReader2 {
 				if(j>i && s.substring(i+1, j).length()>1){
 					if (idx != 0){
 						data[idx-1] = Double.parseDouble(s.substring(i+1, j));
-						//System.out.println(s.substring(i, j));
 						idx++;
 					}else{
-						//System.out.println(s.substring(i,j));
 						year = Integer.parseInt(s.substring(i+1, j));
-						listYear.add(year);
+						//listYear.add(year);
 						idx++;
 					}
 					i = j;
@@ -145,12 +131,12 @@ public class DataReader2 {
 				}
 			}
 		}
-		
-		if (coord[0]>-20 && coord[0]<52){
-			if (coord[1]>-35 && coord[1]<25){
+		//if (coord[0]>-20 && coord[0]<52){
+			if (year>1984){
+				//System.out.println("HERE :" + coord[0] + " " + coord[1] + " " + data [0] + " " + year + " " + type);
 				CreateStation(coord, data, year, type);
 			}
-		}
+		//}
 		
 	}
 	
@@ -169,7 +155,6 @@ public class DataReader2 {
 		    	check = true;
 		    }
 		}
-		
 		if (!check){
 			if (type.equalsIgnoreCase("air_temp")){
 				st.setTemp(year, data);
@@ -177,8 +162,8 @@ public class DataReader2 {
 				st.setPrec(year, data);
 			}
 	    	listS.add(st);
-
 		}
 	}
+	
 }
 

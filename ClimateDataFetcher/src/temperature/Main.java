@@ -23,9 +23,9 @@ public class Main {
 			}
 		}
 
-		DataReader dr = new DataReader(folder, fileName);
+		//DataReader dr = new DataReader(folder, fileName);
 		
-		File folder2 = new File("D:/GIS/Malaria/KNMI/Temp_nonAdjusted");
+		File folder2 = new File("D:/GIS/Malaria/KNMI/Temp");
 		//  D:/GIS/Malaria/KNMI/Prec
 		//  /Users/ludovicdupuis/Documents/workspace_Java/Malaria/ClimateDataFetcher/src/data2
 		i = 0;
@@ -42,7 +42,7 @@ public class Main {
 				i++;
 			}
 		}
-		DataReader2 dr2 = new DataReader2(folder2, fileName2, "Temp");
+		DataReader2 dr2 = new DataReader2(folder2, fileName2, "air_temp");
 
 	}
 }
