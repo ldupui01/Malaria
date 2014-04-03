@@ -139,7 +139,6 @@ public class DataReader {
 				st.setPrec(year, data);
 			}
 	    	listS.add(st);
-
 		}
 	}
 }

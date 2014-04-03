@@ -17,7 +17,6 @@ public class Main {
 		for (File file : listOfFiles) {
 			if (file.isFile()) {
 				fileName[i] = file.getName();
-				System.out.println(file.getName());
 				i++;
 			}
 		}

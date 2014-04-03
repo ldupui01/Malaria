@@ -45,7 +45,6 @@ public class DataReader2 {
 						switch (type){
 						case "air_temp":
 							print = obj.toString(year, "air_temp");
-							System.out.println(print);
 							break;
 						case "prec":
 							print = obj.toString(year, "prec");
@@ -71,7 +70,6 @@ public class DataReader2 {
 			double [] coordinates = new double[2];
 			while ((line = br.readLine()) != null) {
 				if (line.substring(0, 15).equalsIgnoreCase("# coordinates: ")){
-					System.out.println("found coordinate");
 					coordinates = decryptCoord(line);
 				}
 				if(!line.substring(0,1).equalsIgnoreCase("#")){
@@ -121,7 +119,6 @@ public class DataReader2 {
 						idx++;
 					}else{
 						year = Integer.parseInt(s.substring(i+1, j));
-						//listYear.add(year);
 						idx++;
 					}
 					i = j;
