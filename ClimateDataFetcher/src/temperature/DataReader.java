@@ -38,15 +38,16 @@ public class DataReader {
 	private void printData() {
 		 try{
 		    Writer output = null;
-		    File logFile = new File("results_02042014.txt");
+		    File logFile = new File("results_19852010.txt");
 		     
 		    output = new BufferedWriter(new FileWriter(logFile));
-
+		    
+		    output.write("Long_X, Lat_Y, Year, Type, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec" + "\r");
 			Iterator<Station> it = listS.iterator();
 			while(it.hasNext()){
 				Station obj = it.next();
 				String print = "";
-				for (Integer year : listYear){   //(int year = 1985; year<2011;year++){
+				for (Integer year : listYear){
 					for (int i = 0; i<2; i++){
 						switch (i){
 						case 0:
@@ -56,7 +57,6 @@ public class DataReader {
 							print = obj.toString(year, "prec");
 							break;
 						}
-						//System.out.println(print + "\r");
 						output.write(print + "\r");
 					}
 				}
@@ -76,7 +76,6 @@ public class DataReader {
 			String line;
 			while ((line = br.readLine()) != null) {
 				deCryptString(line+" ", year, type);
-
 			}
 			br.close();
 		}

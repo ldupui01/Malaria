@@ -32,15 +32,16 @@ public class DataReader2 {
 	private void printData(String type) {
 		 try{
 		    Writer output = null;
-		    File logFile = new File("results2_" + type + ".txt");
+		    File logFile = new File("results_19852013_" + type + ".txt");
 		     
 		    output = new BufferedWriter(new FileWriter(logFile));
-
+		    output.write("Long_X, Lat_Y, Year, Type, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec" + "\r");
+		    
 			Iterator<Station> it = listS.iterator();
 			while(it.hasNext()){
 				Station obj = it.next();
 				String print = "";
-				for (int year = 2005; year < 2014; year++){
+				for (int year = 1985; year < 2014; year++){
 						switch (type){
 						case "air_temp":
 							print = obj.toString(year, "air_temp");
@@ -93,11 +94,9 @@ public class DataReader2 {
 				if(j>i && line.substring(i+1, j).length()>1){
 					if (idx == 0){
 						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
-						//System.out.println(line.substring(i, j-2));
 						idx++;
 					}else if(idx == 1){
 						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
-						//System.out.println(line.substring(i,j-2));
 						idx++;
 					}
 					i = j;
@@ -131,12 +130,10 @@ public class DataReader2 {
 				}
 			}
 		}
-		//if (coord[0]>-20 && coord[0]<52){
+
 			if (year>1984){
-				//System.out.println("HERE :" + coord[0] + " " + coord[1] + " " + data [0] + " " + year + " " + type);
 				CreateStation(coord, data, year, type);
 			}
-		//}
 		
 	}
 	
