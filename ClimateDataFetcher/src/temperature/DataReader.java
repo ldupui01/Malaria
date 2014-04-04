@@ -9,18 +9,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class DataReader {
 	private List<Station> listS;
-	private List<Integer>listYear;
+	private Set<Integer>listYear;
 	private Station firstStation;
 	
 	public DataReader(File folder, String[] file) throws FileNotFoundException, IOException{
 		listS = new ArrayList<Station>();
-		listYear = new LinkedList<Integer>();
+		listYear = new HashSet<Integer>();
 		
 		for(int i = 0 ; i<file.length;i++){
 			int idx = file[i].indexOf(".");
@@ -33,6 +35,8 @@ public class DataReader {
 			}
 		}
 		printData();
+		//System.out.println(listS.size());
+		//System.out.println(listYear.size());
 	}
 
 	private void printData() {
@@ -42,23 +46,23 @@ public class DataReader {
 		     
 		    output = new BufferedWriter(new FileWriter(logFile));
 		    
-		    output.write("Long_X, Lat_Y, Year, Type, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec" + "\r");
+		    output.write("Long_X,Lat_Y,Year,Type,JanT,FebT,MarT,AprT,MayT,JunT,JulT,AugT,SepT,OctT,NovT,DecT,Long_P,Lat_P,YearP,TypeP,JanP,FebP,MarP,AprP,MayP,JunP,JulP,AugP,SepP,OctP,NovP,DecP" + "\r");
 			Iterator<Station> it = listS.iterator();
 			while(it.hasNext()){
 				Station obj = it.next();
 				String print = "";
 				for (Integer year : listYear){
-					for (int i = 0; i<2; i++){
-						switch (i){
-						case 0:
+					//for (int i = 0; i<2; i++){
+						//switch (i){
+						//case 0:
 							print = obj.toString(year, "air_temp");
-							break;
-						case 1:
-							print = obj.toString(year, "prec");
-							break;
-						}
-						output.write(print + "\r");
-					}
+							//break;
+						//case 1:
+							print += "," + obj.toString(year, "prec");
+							//break;
+						//}
+					//}
+					output.write(print + "\r");
 				}
 			}
 			output.close();
@@ -84,8 +88,6 @@ public class DataReader {
 		}
 	}
 
-
-
 	private void deCryptString(String s, int year, String type) {
 		double[] data = new double[12];
 		double[] coord = new double[2];
@@ -107,13 +109,11 @@ public class DataReader {
 				}
 			}
 		}
-		
 		if (coord[0]>-20 && coord[0]<52){
 			if (coord[1]>-35 && coord[1]<25){
 				CreateStation(coord, data, year, type);
 			}
-		}
-		
+		}	
 	}
 	
 	private void CreateStation(double[] coord, double[] data, int year, String type){
@@ -131,7 +131,6 @@ public class DataReader {
 		    	check = true;
 		    }
 		}
-		
 		if (!check){
 			if (type.equalsIgnoreCase("air_temp")){
 				st.setTemp(year, data);
@@ -141,4 +140,5 @@ public class DataReader {
 	    	listS.add(st);
 		}
 	}
+	
 }

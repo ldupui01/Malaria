@@ -37,7 +37,7 @@ public class Main {
 				i++;
 			}
 		}
-		DataReader2 dr2 = new DataReader2(folder2, fileName2, "air_temp");
+		//DataReader2 dr2 = new DataReader2(folder2, fileName2, "air_temp");
 		
 		File folder3 = new File("D:/GIS/Malaria/KNMI/Prec_nonAdjusted");
 
@@ -53,7 +53,7 @@ public class Main {
 				i++;
 			}
 		}
-		DataReader2 dr3 = new DataReader2(folder3, fileName3, "prec");
+		//DataReader2 dr3 = new DataReader2(folder3, fileName3, "prec");
 
 	}
 }

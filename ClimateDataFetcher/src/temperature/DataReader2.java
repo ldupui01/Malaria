@@ -35,7 +35,7 @@ public class DataReader2 {
 		    File logFile = new File("results_19852013_" + type + ".txt");
 		     
 		    output = new BufferedWriter(new FileWriter(logFile));
-		    output.write("Long_X, Lat_Y, Year, Type, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec" + "\r");
+		    output.write("Lat_X,Long_Y,Year,Type,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" + "\r");
 		    
 			Iterator<Station> it = listS.iterator();
 			while(it.hasNext()){
@@ -91,7 +91,7 @@ public class DataReader2 {
 			if(Character.isWhitespace(line.charAt(j))){
 				if(j>i && line.substring(i+1, j).length()>1){
 					if (idx == 0){
-						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
+						coord[idx] = Double.parseDouble(line.substring(i, j-2));
 						idx++;
 					}else if(idx == 1){
 						coord[idx] = Double.parseDouble(line.substring(i+1, j-2));
